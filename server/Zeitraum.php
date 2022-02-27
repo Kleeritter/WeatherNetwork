@@ -52,13 +52,13 @@
     $zeita =$_GET["zeit1"];
     $zeite =$_GET["zeit2"];
     //address of the server where db is installed
-    $servername = "kleeritter.duckdns.org";
+    $servername = "ip or Server";
     //username to connect to the db
     //the default value is root
     $username = "root";
     //password to connect to the db
     //this is the value you would have specified during installation of WAMP stack
-    $password = "lizuteras11";
+    $password = "password";
     //name of the db under which the table is created
     $dbName = "weather_station";
     //establishing the connection to the db.
