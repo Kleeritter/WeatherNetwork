@@ -1,0 +1,71 @@
+body {
+    background-color: #2e3440;
+    font-family: 'Quicksand';font-size: 22px;
+    }
+    canvas {
+      background: rgba(59, 66, 82, 1);
+      border-radius: 25px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  img {
+      border-radius: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+    h1 {
+    color: rgba(216, 222, 233, 1);
+    text-align:center;
+  }
+  h2 {
+    color: rgba(229, 233, 240, 1);
+    text-align:center;
+  }
+  h3 {
+    color: rgba(229, 233, 240, 1);
+    text-align:center;
+  }
+  p {
+    color: rgba(229, 233, 240, 1);
+    text-align:center;
+  }
+  form {
+    color: rgba(229, 233, 240, 1);
+    text-align:center;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: #3b4252;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+  }
+  
+  li {
+    float: left;
+    border-radius: 25px;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    border-radius: 25px;
+  }
+  
+  li a:hover {
+    background-color: #81a1c1;
+    border-radius: 25px;
+  }
+  
+  .active {
+    background-color: #5e81ac;
+    border-radius: 25px;
+  }
