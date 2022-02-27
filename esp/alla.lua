@@ -1,5 +1,5 @@
-local SSID = "Adrenalin"
-local SSID_PASSWORD = "<zku=B0>8.237PS4j1T2"
+local SSID = "SSID"
+local SSID_PASSWORD = "Password"
 local SIGNAL_MODE = wifi.PHYMODE_N
 local bruze
 local allatimer
@@ -7,8 +7,8 @@ SDA_PIN = 4 -- sda pin, GPIO2
 SCL_PIN = 3 -- scl pin, GPIO0
 
 INTERVAL = 300 -- seconds
-RASPBERRY_PI_URL = "http://kleeritter.duckdns.org:8001/esp8266_trigger"
-SERVER_PASSWORD = "tutorials-raspberrypi.de"
+RASPBERRY_PI_URL = "IP or Server"
+SERVER_PASSWORD = "ServerPassword"
  
  
 function wait_for_wifi_conn ( )
@@ -84,8 +84,8 @@ wifi.setmode(wifi.STATION)
 wifi.setphymode(wifi.PHYMODE_N)
 --wifi.sta.config(SSID, SSID_PASSWORD)
 station_cfg={}
-station_cfg.ssid="Adrenalin"
-station_cfg.pwd="<zku=B0>8.237PS4j1T2"
+station_cfg.ssid="SSID"
+station_cfg.pwd="Password"
 station_cfg.save=true
 wifi.sta.config (station_cfg)
 wifi.sta.autoconnect (1)
