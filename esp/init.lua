@@ -1,0 +1,3 @@
+dofile("alla.lua")
+
+
