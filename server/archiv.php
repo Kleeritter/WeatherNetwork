@@ -9,54 +9,11 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      
- 
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    </head>
 
    <body >
-   <?php
-    //address of the server where db is installed
-    $servername = "ip or server";
-    //username to connect to the db
-    //the default value is root
-    $username = "root";
-    //password to connect to the db
-    //this is the value you would have specified during installation of WAMP stack
-    $password = "password";
-    //name of the db under which the table is created
-    $dbName = "archiv";
-    //establishing the connection to the db.
-    $conn = new mysqli($servername, $username, $password, $dbName);
-    //checking if there were any error during the last connection attempt
-    if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
-    }
-    //the SQL query to be executed
-    $query = "SELECT * FROM vic2017";
-    //storing the result of the executed query
-    $result = $conn->query($query);
-    //initialize the array to store the processed data
-    $jsonArray = array();
-    //check if there is any data returned by the SQL Query
-    if ($result->num_rows > 0) {
-      //Converting the results into an associative array
-      while($row = $result->fetch_assoc()) {
-        $jsonArrayItem = array();
-        $jsonArrayItem['label'] = $row['datum'];
-        $jsonArrayItem['tempe'] = $row['temp'];
-        $jsonArrayItem['nied'] = $row['niederschlag'];
-        $jsonArrayItem['luftdru'] = $row['luftdruck'];
-        //append the above created object into the main array.
-        array_push($jsonArray, $jsonArrayItem);
-      }
-    }
-    //Closing the connection to DB
-    $conn->close();
-    //set the response content type as JSON
-    $jsonStr=json_encode($jsonArray);
-
-?>
-
    <div class="header">
      <h1 style="text-align:center;"> Archiv</h1>
       <img src = "/tausch/frog.jpg"
@@ -71,204 +28,59 @@
       </ul>
 
       <h2 style="text-align:center;"> Messdaten</h2>
-      <p style="text-allign:center;"> Hier kann das Jahr sowie der Zeitraum verändert werden.
+      <p style="text-allign:center;"> Hier kann das Jahr verändert werden.
     </p>
-      <form action="anfragearchiv.php" method="get">
-      <label for="datum">Datum:</label>
-      <input type="month" id="datum" name="datum"> 
-      <input type="submit">
-      </form>
-      <form action="Zeitraum.php" method="get">
-      <label for="datum">Zeitraum:</label>
-      <input type="date" id="zeit1" name="zeit1"> 
-      <input type="date" id="zeit2" name="zeit2"> 
-      <input type="submit">
-      </form>
-      <h3 > mittlere Temperatur </h3>
-      <canvas id="myChart" style="width:400"></canvas> 
-      <h3 >Tages Niederschlagssumme  </h3>
-      <canvas id="myCharthumid" style="width:400"></canvas>
-      <h3 > mittlerer Luftdruck  </h3>
-      <canvas id="myChartpressure" style="width:400"></canvas>
-      <script id="datas">
-      var  jsonData= JSON.parse('<?=$jsonStr; ?>') ;
-      //sessionStorage.setItem("jsonDataa",JSON.stringify(jsonData));
-      let delayed;
-//var  jsonData= JSON.parse(sessionStorage.getItem("jsonDataa"));
-console.log(jsonData);
-var jsx=[];
-var jsyt=[];
-var jsyn=[];
-var jsyp=[];
-for (let i=0; i<jsonData.length;i++){
-    var alla= jsonData[i]['label'];
-    console.log(typeof alla);
-    var allarm=jsonData[i]['tempe'];
-    var allarmx=jsonData[i]['nied'];
-    var allarmp=jsonData[i]['luftdru'];
-    console.log(typeof alla)
-    jsx.push(alla);
-    jsyt.push(allarm);
-    jsyn.push(allarmx);
-    jsyp.push(allarmp);
+    <?php 
+$vic =2017;
+
+?>
+  <form action="archiv.php"  method="get">
+
+  <input type="number" id ="vic" name="vic" min="2017" max="2099" step="1" value="2017" />
+  <input type="submit" value="Submit">
+</form> 
+     
+
+<div class="container">
+  <div class="Temperaturgraf">  <h3>  Temperatur </h3><canvas id="myChart"></canvas> </div>
+  <div class="Luftdruckgraf"><h3> mittlerer Luftdruck  </h3><canvas id="myChartpressure"></canvas></div>
+  <div class="Niederschlaggraf"> <h3>Tages Niederschlagssumme  </h3>
+      <canvas id="myCharthumid"></canvas></div>
+  <div class="MaxT"> <div class="Werte"><p>  </p><p class="Count"  style="color:#bf616a"id="maxT"></p>
+  <p id="maxTd"></p>
+</div> </div>
+  <div class="MinT"><p class="Count" id="minT" style="color:#5e81ac"></p>
+    <p id="minTd"></p></div>
+  <div class="MaxP"><p class="Count" id="maxP" style="color:#bf616a"></p>   <p id="maxPd"></p>  </div>
+  <div class="MinP"><p class="Count" id="minP" style="color:#5e81ac"></p>  <p id="minPd"></p></div>
+  <div class="MaxSonne">7</div>
+  <div class="GesammtNieder"><p > Summe</p><p class= "Count" id="nins"></p><p > mm </p></div>
+  <div class="MittelT"><p > X̅</p> <p class="Count" id ="mimT"></p><p > °C </p></div>
+  <div class="MittelP"><p > X̅ </p><p class="Count" id="mimP"></p><p > hPa </p></div>
+  <div class="Witterungsverhalten"><p > Witterung</p> <canvas id="myDoughnutChart"></canvas></div>
+</div>
+   <?php 
+$vic =$_GET["vic"];
+if (is_null($vic)) {
+  $vic=2017;
+} else {
+  echo "Have a good night!";
 };
-console.log(jsx);
-var xValues = jsx;
-var yValuest = jsyt;
-var yValuesn = jsyn;
-var yValuesp = jsyp;
-new Chart("myChart", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      fill: false,
-      lineTension: 0,
-      backgroundColor: "rgba(191, 97, 106, 1)",
-      Color: "rgba(236, 239, 244, 1)",
-      borderColor : "rgba(191, 97, 106, 1)",
-      data: yValuest
-    }]
-  },
-  options: {
-    animation:{
-      onComplete: () => {
-        delayed =true;
-      },
-      delay: (context) => {
-        let delay =0;
-        if (context.type =="data" && context.mode === "default" && !delayed){
-          delay= context.dataIndex * 10 + context.datasetIndex *10;
-        }
-        return delay;
-      },
-    },
-    hoverRadius:7,
-    legend: {display: true},
-    scales:{
-        xAxes:{
-            type:'time',
-            time:{
-              unit:'month'
-            },
-            grid:{
-                display:true,
-                color:"rgba(76, 86, 106, 1)"
-            }
-        },
-        yAxes:{
-          title:{
-            display:true,
-            text:'Temperatur in °C'
-          },
-          grid:{
-                color:"rgba(76, 86, 106, 1)"
-            }
-        }
-    }
-  }
-});
-new Chart("myCharthumid", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      fill: false,
-      lineTension: 0,
-      backgroundColor: "rgba(136, 192, 208, 1)",
-      borderColor: "rgba(136, 192, 208, 1)",
-      data: yValuesn
-    }]
-  },
-  options: {
-    animation:{
-      onComplete: () => {
-        delayed =true;
-      },
-      delay: (context) => {
-        let delay =0;
-        if (context.type =="data" && context.mode === "default" && !delayed){
-          delay= context.dataIndex * 10 + context.datasetIndex *10;
-        }
-        return delay;
-      },
-    },
-    hoverRadius:7,
-    legend: {display: false},
-    scales:{
-        xAxes:{
-            type:'time',
-            time: {
-                unit: 'month'
-                    },
-            grid:{
-                display:true,
-                color:"rgba(76, 86, 106, 1)"
-            }
-        },
-        yAxes:{
-          title:{
-            display:true,
-            text:'Niederschlagssumme in mm'
-          },
-          grid:{
-                color:"rgba(76, 86, 106, 1)"
-            }
-        }
-    }
-  }
-});
-new Chart("myChartpressure", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      fill: false,
-      lineTension: 0,
-      backgroundColor: "#b48ead",
-      borderColor: "#b48ead",
-      data: yValuesp
-    }]
-  },
-  options: {
-    animation:{
-      onComplete: () => {
-        delayed =true;
-      },
-      delay: (context) => {
-        let delay =0;
-        if (context.type =="data" && context.mode === "default" && !delayed){
-          delay= context.dataIndex * 10 + context.datasetIndex *10;
-        }
-        return delay;
-      },
-    },
-    hoverRadius:7,
-    legend: {display: false},
-    scales:{
-        xAxes:{
-            type:'time',
-            time: {
-                unit: 'month'
-                    },
-            grid:{
-                display:true,
-                color:"rgba(76, 86, 106, 1)"
-            }
-        },
-        yAxes:{
-          title:{
-            display:true,
-            text:'mittlere Luftdruck in hPa'
-          },
-          grid:{
-                color:"rgba(76, 86, 106, 1)"
-            }
-        }
-    }
-  }
-});
-</script>
+include('archivdaten.php')
+?>
    </body>
 </html>
 
+
+<script>
+$('.Count').each(function () {
+  var $this = $(this);
+  jQuery({ Counter: 0 }).animate({ Counter: $this.text() }, {
+    duration: 3000,
+    easing: 'swing',
+    step: function () {
+      $this.text(this.Counter.toFixed(2));
+    }
+  });
+});
+</script>

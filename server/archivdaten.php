@@ -1,55 +1,4 @@
-<!DOCTYPE html>
-<html lang="de">
-   <head >
-      <title>Kleefelder Wetternetz</title>
-      <link rel="icon" type="image/x-icon" href="/tausch/favicon.ico">
-      <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
-      <link rel="stylesheet" href="style.css">
-   </head>
-   <body >
-      <h1 style="text-align:center;"> Kleefelder Wetternetzt</h1>
-      <img src = "/tausch/frog.jpg"
-      alt = "Monty der Kater" style="width:600px;height:600px;"/>
-      <p><cite>Monty der schnucckelige Kater</cite> 2021.</p> 
-      <ul>
-      <li><a  href="#home">Home</a></li>
-      <li><a class="active" href="anfrage.php">Messdaten</a></li>
-      <li><a href="archiv.php">Archiv</a></li>
-      <li><a href="impressum.php">Impressum</a></li>
-      </ul>
-      <h2 style="text-align:center;"> Ursprung</h2>
-      <p style="text-align:center;"> Das Kleefelder Wetternetzt ist ein Zusammenschluss einiger
-          Studierender der Meteorologie, welche die meteorologischen Parameter 
-          an den eigenen Standorten genauer untersuchen wollen.</p>
-      <h2 style="text-align:center;"> Messdaten</h2>
-      <p style="text-allign:center;"> Hier kann das Datum verändert werden.
-    </p>
-      <form action="#" method="get">
-      <label for="datum">Datum:</label>
-      <input type="date" id="datum" name="datum"> 
-      <input type="submit">
-      </form>
-      </form>
-      <form action="Zeitraum.php" method="get">
-      <label for="datum">Zeitraum:</label>
-      <input type="date" id="zeit1" name="zeit1"> 
-      <input type="date" id="zeit2" name="zeit2"> 
-      <input type="submit">
-      </form>
-      <h3 >Temperatur </h3>
-      <canvas id="myChart" style="width:400"></canvas>
-      <h3 >Luftdruck  </h3>
-      <canvas id="myCharthumid" style="width:400"></canvas>
-      <h3 style="text-align:center;"> Karte des Messnetzes</h2>
-         <iframe title=" Messnetz" aria-label="Karte" id="datawrapper-chart-5l9DS" src="https://datawrapper.dwcdn.net/5l9DS/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="595"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
-      <h2 style="text-align:center;"> Archiv</h2>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.0.0-alpha0/date_fns.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js">
-      </script>
-      <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-     
 <?php
-    $datum =$_GET["datum"];
     //address of the server where db is installed
     $servername = "kleeritter.duckdns.org";
     //username to connect to the db
@@ -59,7 +8,7 @@
     //this is the value you would have specified during installation of WAMP stack
     $password = "lizuteras11";
     //name of the db under which the table is created
-    $dbName = "weather_station";
+    $dbName = "archiv";
     //establishing the connection to the db.
     $conn = new mysqli($servername, $username, $password, $dbName);
     //checking if there were any error during the last connection attempt
@@ -67,7 +16,7 @@
       die("Connection failed: " . $conn->connect_error);
     }
     //the SQL query to be executed
-    $query = "SELECT * FROM vic+$datum";
+    $query = "SELECT * FROM vic$vic";
     //storing the result of the executed query
     $result = $conn->query($query);
     //initialize the array to store the processed data
@@ -79,7 +28,10 @@
         $jsonArrayItem = array();
         $jsonArrayItem['label'] = $row['datum'];
         $jsonArrayItem['tempe'] = $row['temp'];
-        $jsonArrayItem['humid'] = $row['humidity'];
+        $jsonArrayItem['nied'] = $row['niederschlag'];
+        $jsonArrayItem['luftdru'] = $row['luftdruck'];
+        $jsonArrayItem['wettera']=$row['Wetterzustanda'];
+        $jsonArrayItem['wetterb']=$row['Wetterzustandb'];
         //append the above created object into the main array.
         array_push($jsonArray, $jsonArrayItem);
       }
@@ -88,9 +40,10 @@
     $conn->close();
     //set the response content type as JSON
     $jsonStr=json_encode($jsonArray);
-    $jsonStrong=json_encode($jsonArrayITem['label']);
- 
+
 ?>
+
+   
       <script id="datas">
       var  jsonData= JSON.parse('<?=$jsonStr; ?>') ;
       //sessionStorage.setItem("jsonDataa",JSON.stringify(jsonData));
@@ -101,19 +54,87 @@ var jsx=[];
 var jsyt=[];
 var jsyn=[];
 var jsyp=[];
+var wettera=[];
+var wetterb=[];
+var a=0;
+var b=0;
+var c=0;
+var d=0;
+var e=0;
+var f=0;
+var g=0;
+var h=0;
+
+
+
+
+console.log(a);
 for (let i=0; i<jsonData.length;i++){
     var alla= jsonData[i]['label'];
-    console.log(typeof alla);
     var allarm=jsonData[i]['tempe'];
     var allarmx=jsonData[i]['nied'];
     var allarmp=jsonData[i]['luftdru'];
-    console.log(typeof alla)
+    var allawa=jsonData[i]['wettera'];
+    var allawb=jsonData[i]['wetterb'];
+    if (allawa == "Bedeckt" ) {
+        a=a+1;
+    } else if (allawa== "Schneefall") {
+        b=b+1;
+    } else if (allawa== "Regen") {
+        c=c+1;
+    } else if (allawa== "Stark bewölkt") {
+        d=d+1;
+    } else if (allawa== "Wolkig") {
+        e=e+1;
+    } else if (allawa== "Leicht bewölkt") {
+        f=f+1;
+    } else if (allawa== "Sonnig") {
+        g=g+1;
+    } else {
+        h=h+1;
+    };
+
     jsx.push(alla);
     jsyt.push(allarm);
     jsyn.push(allarmx);
     jsyp.push(allarmp);
+    wettera.push(allawa);
+    wetterb.push(allawb);
 };
-console.log(jsx);
+
+var wetter=[a,b,c,d,e,f,g,h];
+console.log(a);
+console.log(wetter);
+//Maximale Temperatur
+var numberArray = jsyt.map(Number);
+
+let index = numberArray.indexOf( Math.max(...numberArray));
+
+
+document.getElementById("maxT").innerHTML = Math.max(...numberArray);
+document.getElementById("maxTd").innerHTML = "°C  am " +moment(jsx[index]).format('DD.MM.YYYY');
+//Minimale Temperatur
+let indexm = numberArray.indexOf( Math.min(...numberArray));
+document.getElementById("minT").innerHTML = Math.min(...numberArray);
+document.getElementById("minTd").innerHTML = "°C  am " +moment(jsx[indexm]).format('DD.MM.YYYY');
+//Mittlere Temperatur
+const average = (array) => array.reduce((a, b) => a + b) / array.length;
+document.getElementById("mimT").innerHTML = average(numberArray);
+//Max Luftdruck
+var par = jsyp.map(Number);
+let indexp = par.indexOf( Math.max(...par));
+document.getElementById("maxP").innerHTML = Math.max(...par);
+document.getElementById("maxPd").innerHTML = " hPa am "+ moment(jsx[indexp]).format('DD.MM.YYYY');
+//min Luftdruck
+let indexpm = numberArray.indexOf( Math.min(...numberArray));
+document.getElementById("minP").innerHTML = Math.min(...par);
+document.getElementById("minPd").innerHTML =" hPa am "+ moment(jsx[indexpm]).format('DD.MM.YYYY');
+//mittlere Luftdruck
+document.getElementById("mimP").innerHTML =Math.round(average(par));
+// Niederschlagssumme
+var nar = jsyn.map(Number);
+const reducer = (accumulator, curr) => accumulator + curr;
+document.getElementById("nins").innerHTML =nar.reduce(reducer);
 var xValues = jsx;
 var yValuest = jsyt;
 var yValuesn = jsyn;
@@ -269,8 +290,72 @@ new Chart("myChartpressure", {
     }
   }
 });
+data = {
+    datasets: [{
+        data: wetter,
+        backgroundColor: [
+          "#D08770",
+          "#EBCB8B",
+          "#A3BE8C",
+          "#8FBCBB",
+          "#88C0D0",
+          "#81A1C1",
+          "#5E81AC",
+          "#B48EAD"
+
+        ],
+        borderColor: [
+            "#D08770",
+          "#EBCB8B",
+          "#A3BE8C",
+          "#8FBCBB",
+          "#88C0D0",
+          "#81A1C1",
+          "#5E81AC",
+          "#B48EAD"
+        ],
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+        'Bedeckt',
+        'Schneefall',
+        'Regen',
+        'Stark bewölkt',
+        'Wolkig',
+        'Leicht bewölkt',
+        'Sonnig',
+        'Nebel'
+    ],
+   
+};
+// Append '4d' to the colors (alpha channel), except for the hovered index
+function handleHover(evt, item, legend) {
+  legend.chart.data.datasets[0].backgroundColor.forEach((color, index, colors) => {
+    colors[index] = index === item.index || color.length === 9 ? color : color + '4D';
+  });
+  legend.chart.update();
+}
+// Removes the alpha channel from background colors
+function handleLeave(evt, item, legend) {
+  legend.chart.data.datasets[0].backgroundColor.forEach((color, index, colors) => {
+    colors[index] = color.length === 9 ? color.slice(0, -2) : color;
+  });
+  legend.chart.update();
+}
+new Chart("myDoughnutChart", {
+    type: 'doughnut',
+    data: data,
+    options:  {
+      legend:{
+        display:false
+      },
+      plugins: {
+      legend: {
+        onHover: handleHover,
+        onLeave: handleLeave
+      }
+    }
+    }
+});
 </script>
-
-   </body>
-</html>
-

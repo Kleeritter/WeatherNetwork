@@ -5,6 +5,12 @@
       <link rel="icon" type="image/x-icon" href="/tausch/favicon.ico">
       <link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
       <link rel="stylesheet" href="style.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.0.0-alpha0/date_fns.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
    </head>
    <body >
       <h1 style="text-align:center;"> Kleefelder Wetternetzt</h1>
@@ -12,7 +18,7 @@
       alt = "Monty der Kater" style="width:600px;height:600px;"/>
       <p><cite>Monty der schnucckelige Kater</cite> 2021.</p> 
       <ul>
-      <li><a  href="#home">Home</a></li>
+      <li><a  href="index.php">Home</a></li>
       <li><a class="active" href="anfrage.php">Messdaten</a></li>
       <li><a href="archiv.php">Archiv</a></li>
       <li><a href="impressum.php">Impressum</a></li>
@@ -40,165 +46,35 @@
       <canvas id="myChart" style="width:400"></canvas>
       <h3 >Luftdruck  </h3>
       <canvas id="myCharthumid" style="width:400"></canvas>
-      <h3 style="text-align:center;"> Karte des Messnetzes</h2>
-         <iframe title=" Messnetz" aria-label="Karte" id="datawrapper-chart-5l9DS" src="https://datawrapper.dwcdn.net/5l9DS/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="595"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
-      <h2 style="text-align:center;"> Archiv</h2>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.0.0-alpha0/date_fns.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js">
-      </script>
-      <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-     
-<?php
+      
+      <h2 style="text-align:center;"> Extrema</h2>
+    
+  <div class="alla">
+  <div class="MaxTf"><p class="Count"  style="color:#bf616a"id="maxT"></p>
+  <p id="maxTd"></p></div>
+  <div class="MinTf"><p class="Count" id="minT" style="color:#5e81ac"></p>
+    <p id="minTd"></p></div>
+  <div class="MittelTf"><p > X̅</p> <p class="Count" id ="mimT"></p><p > °C </p></div>
+  <div class="MittelPf"><p > X̅ </p><p class="Count" id="mimP"></p><p > hPa </p></div>
+  <div class="MinPf"><p class="Count" id="minP" style="color:#5e81ac"></p>  <p id="minPd"></p></div>
+  <div class="MaxPf"><p class="Count" id="maxP" style="color:#bf616a"></p>   <p id="maxPd"></p></div>
+</div>
+   <?php
     $datum =$_GET["datum"];
-    //address of the server where db is installed
-    $servername = "ip or server";
-    //username to connect to the db
-    //the default value is root
-    $username = "root";
-    //password to connect to the db
-    //this is the value you would have specified during installation of WAMP stack
-    $password = "password";
-    //name of the db under which the table is created
-    $dbName = "weather_station";
-    //establishing the connection to the db.
-    $conn = new mysqli($servername, $username, $password, $dbName);
-    //checking if there were any error during the last connection attempt
-    if ($conn->connect_error) {
-      die("Connection failed: " . $conn->connect_error);
+    include('anfragedaten.php');
+  ?>
+   </body>
+   <script>
+$('.Count').each(function () {
+  var $this = $(this);
+  jQuery({ Counter: 0 }).animate({ Counter: $this.text() }, {
+    duration: 3000,
+    easing: 'swing',
+    step: function () {
+      $this.text(this.Counter.toFixed(2));
     }
-    //the SQL query to be executed
-    $query = "SELECT * FROM temperature where Date(datum)='$datum'";
-    //storing the result of the executed query
-    $result = $conn->query($query);
-    //initialize the array to store the processed data
-    $jsonArray = array();
-    //check if there is any data returned by the SQL Query
-    if ($result->num_rows > 0) {
-      //Converting the results into an associative array
-      while($row = $result->fetch_assoc()) {
-        $jsonArrayItem = array();
-        $jsonArrayItem['label'] = $row['datum'];
-        $jsonArrayItem['tempe'] = $row['temp'];
-        $jsonArrayItem['humid'] = $row['humidity'];
-        //append the above created object into the main array.
-        array_push($jsonArray, $jsonArrayItem);
-      }
-    }
-    //Closing the connection to DB
-    $conn->close();
-    //set the response content type as JSON
-    $jsonStr=json_encode($jsonArray);
-    $jsonStrong=json_encode($jsonArrayITem['label']);
- 
-?>
-<script>
-var jsonData= JSON.parse('<?=$jsonStr; ?>');
-var jsx=[];
-var jsy=[];
-var jsxx=[];
-const bru={
-    day:"numeric",
-    hour: "numeric",
-    minute: "numeric"
-};
-for (let i=0; i<jsonData.length;i++){
-    var alla= jsonData[i]['label'];
-    console.log(typeof alla);
-    //alla= new Date(alla).toLocaleDateString("de-DE",bru);
-    var allarm=jsonData[i]['tempe'];
-    var allarmx=jsonData[i]['humid']*1000;
-    console.log(typeof alla)
-    jsx.push(alla);
-    jsxx.push(allarmx);
-    jsy.push(allarm);
-};
-console.log(jsx);
-var xValues = jsx;
-
-var yValues = jsy;
-console.log(Object.keys(jsonData["0"]));
-new Chart("myChart", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      fill: false,
-      lineTension: 0,
-      backgroundColor: "rgba(191, 97, 106, 1)",
-      Color: "rgba(236, 239, 244, 1)",
-      borderColor : "rgba(191, 97, 106, 1)",
-      data: yValues
-    }]
-  },
-  options: {
-    legend: {display: true},
-    scales:{
-        xAxes:{
-            type:'time',
-            time: {
-                displayFormats: {
-                        minute: 'hh:mm '
-                    }
-            },
-            grid:{
-                display:true,
-                color:"rgba(76, 86, 106, 1)"
-            }
-        },
-        yAxes:{
-          title:{
-            display:true,
-            text:'Temperatur in °C'
-          },
-          grid:{
-                color:"rgba(76, 86, 106, 1)"
-            }
-        }
-    }
-  }
-});
-var yValues = jsxx;
-new Chart("myCharthumid", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      fill: false,
-      lineTension: 0,
-      backgroundColor: "rgba(136, 192, 208, 1)",
-      borderColor: "rgba(136, 192, 208, 1)",
-      data: yValues
-    }]
-  },
-  options: {
-    legend: {display: false},
-    scales:{
-        xAxes:{
-            type:'time',
-            time: {
-                displayFormats: {
-                        minute: 'hh:mm '
-                    }
-            },
-            grid:{
-                display:true,
-                color:"rgba(76, 86, 106, 1)"
-            }
-        },
-        yAxes:{
-          title:{
-            display:true,
-            text:'Luftdruck in hPa'
-          },
-          grid:{
-                color:"rgba(76, 86, 106, 1)"
-            }
-        }
-    }
-  }
+  });
 });
 </script>
-
-   </body>
 </html>
 

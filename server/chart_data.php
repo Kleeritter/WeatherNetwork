@@ -1,12 +1,12 @@
 <?php
     //address of the server where db is installed
-    $servername = "server";
+    $servername = "kleeritter.duckdns.org";
     //username to connect to the db
     //the default value is root
     $username = "root";
     //password to connect to the db
     //this is the value you would have specified during installation of WAMP stack
-    $password = "password";
+    $password = "lizuteras11";
     //name of the db under which the table is created
     $dbName = "weather_station";
     //establishing the connection to the db.
