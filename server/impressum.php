@@ -21,7 +21,7 @@ Tieckstra&szlig;e 29<br />
 30625 Hannover</p>
 
 <h2>Kontakt</h2>
-<p>Telefon: 01716233869<br />
+<p>Telefon: 0511 55471222<br />
 E-Mail: kleeritter@duck.com</p>
 
 <h2>Redaktionell verantwortlich</h2>
