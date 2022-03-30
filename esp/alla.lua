@@ -1,14 +1,14 @@
-local SSID = "SSID"
-local SSID_PASSWORD = "Password"
+local SSID = "FRITZ!Box Gastzugang"
+local SSID_PASSWORD = "sascha_oksana"
 local SIGNAL_MODE = wifi.PHYMODE_N
 local bruze
-local allatimer
+local maintime
 SDA_PIN = 4 -- sda pin, GPIO2
 SCL_PIN = 3 -- scl pin, GPIO0
 
 INTERVAL = 300 -- seconds
-RASPBERRY_PI_URL = "IP or Server"
-SERVER_PASSWORD = "ServerPassword"
+RASPBERRY_PI_URL = "http://kleeritter.duckdns.org:8001/esp8266_trigger"
+SERVER_PASSWORD = "tutorials-raspberrypi.de"
  
  
 function wait_for_wifi_conn ( )
@@ -67,7 +67,8 @@ function readbmp()
      return{temperature= t/10, humidity= p/100000} 
 end
 function main()
-    
+        maintime=tmr.create()
+        maintime:alarm(60000, tmr.ALARM_AUTO, function ( ) 
         data = readbmp()
         if data ~= false then
             data["sender_id"] = wifi.ap.getmac()
@@ -76,7 +77,7 @@ function main()
             transmit_msg(data)
            
         end
-    
+    end)
 end
  
 -- Configure the ESP as a station (client)
@@ -84,8 +85,8 @@ wifi.setmode(wifi.STATION)
 wifi.setphymode(wifi.PHYMODE_N)
 --wifi.sta.config(SSID, SSID_PASSWORD)
 station_cfg={}
-station_cfg.ssid="SSID"
-station_cfg.pwd="Password"
+station_cfg.ssid="FRITZ!Box Gastzugang"
+station_cfg.pwd="sascha_oksana"
 station_cfg.save=true
 wifi.sta.config (station_cfg)
 wifi.sta.autoconnect (1)
@@ -93,8 +94,6 @@ wifi.sta.autoconnect (1)
 -- Hang out until we get a wifi connection before the httpd server is started.
 wait_for_wifi_conn ( )
  
- 
-allatimer=tmr.create()
-   allatimer:alarm(60000, tmr.ALARM_AUTO, function ( )
-    main()
-end)
+main()
+
+
