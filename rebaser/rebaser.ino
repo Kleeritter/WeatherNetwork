@@ -81,7 +81,7 @@ wifiManager.autoConnect("Wetterlurch", "heiligerfred");
 
 void loop() {
     // put your main code here, to run repeatedly:
-    timeClient.update();
+timeClient.update();
 int currentMinute = timeClient.getMinutes();
 //int currentMinute = 0;
   Serial.print("Minutes: ");
@@ -89,7 +89,6 @@ int currentMinute = timeClient.getMinutes();
 
 switch(currentMinute){
   case 0:
-//if(currentMinute ==0){
  //BMP
    // must call this to wake sensor up and get new measurement data
   // it blocks until measurement is complete
@@ -168,7 +167,7 @@ switch(currentMinute){
   Serial.println("I'm awake, but I'm going into deep sleep mode for 50 minutes");
   ESP.deepSleep(50* 60e6); 
 
-    
+
   } else {
     Serial.println("Forced measurement failed!");
     
@@ -187,10 +186,6 @@ case 30 ... 39 :
      Serial.println(deepsleepdauer);
      ESP.deepSleep(deepsleepdauer); 
 break;    
-
-
-    
-
 case 40 ... 49 :
      deepsleepdauer= 10* 60e6;
      Serial.println("I'm awake, but I'm going into deep sleep mode for  minutes");
