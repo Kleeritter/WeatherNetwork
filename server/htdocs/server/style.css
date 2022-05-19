@@ -1,0 +1,167 @@
+body {
+    background-color: #2e3440;
+    font-family: 'Quicksand';font-size: 22px;
+    }
+    canvas {
+      background: rgba(59, 66, 82, 1);
+      border-radius: 25px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  .container {  display: grid;
+    grid-template-columns: 2fr 0.5fr 0.5fr 1fr; 
+    grid-template-rows: 1fr 1fr 1fr; 
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "Temperaturgraf MaxT MinT MittelT"
+      "Luftdruckgraf MaxP MinP MittelP"
+      "Niederschlaggraf MaxSonne GesammtNieder Witterungsverhalten";
+
+  }
+  
+  .Temperaturgraf { grid-area: Temperaturgraf; }
+  
+  .Luftdruckgraf { grid-area: Luftdruckgraf; }
+  
+  .Niederschlaggraf { grid-area: Niederschlaggraf; }
+  
+  .MaxT { grid-area: MaxT; 
+    justify-self: center;
+    align-self: center; }
+  
+  .MinT { grid-area: MinT; 
+    justify-self: center;
+    align-self: center;
+    
+  }
+  
+  .MaxP { grid-area: MaxP; 
+    justify-self: center;
+    align-self: center;}
+  
+  .MinP { grid-area: MinP;
+    justify-self: center;
+    align-self: center; }
+  
+  .MaxSonne { grid-area: MaxSonne;
+    justify-self: center;
+    align-self: center; }
+  
+  .GesammtNieder { grid-area: GesammtNieder;
+    justify-self: center;
+    align-self: center; }
+  
+  .MittelT { grid-area: MittelT;
+    text-align:center; 
+    justify-self: center;
+    align-self: center;}
+  
+  .MittelP { grid-area: MittelP; 
+    justify-self: center;
+    align-self: center;}
+  
+  .Witterungsverhalten { grid-area: Witterungsverhalten;
+    justify-self: center;
+    align-self: center;
+     height: 360px;
+    width: 360px;
+    float: left;
+  }
+  
+  .Werte{
+    justify-content: center;}
+  img {
+      border-radius: 25px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+    h1 {
+    color: rgba(216, 222, 233, 1);
+    text-align:center;
+  }
+  h2 {
+    color: rgba(229, 233, 240, 1);
+    text-align:center;
+  }
+  h3 {
+    color: rgba(229, 233, 240, 1);
+    text-align:center;
+  }
+  p {
+    color: rgba(229, 233, 240, 1);
+    text-align:center;
+  }
+  .Count {
+    color: rgba(229, 233, 240, 1);
+    text-align:center;
+    font-size: 40px;
+  }
+  form {
+    color: rgba(229, 233, 240, 1);
+    text-align:center;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 25px;
+    overflow: hidden;
+    background-color: #3b4252;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+  }
+  
+  li {
+    float: left;
+    border-radius: 25px;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    border-radius: 25px;
+  }
+  
+  li a:hover {
+    background-color: #81a1c1;
+    border-radius: 25px;
+  }
+  
+  .active {
+    background-color: #5e81ac;
+    border-radius: 25px;
+  }
+  .pie-chart-container,
+.doughnut-chart-container {
+  height: 360px;
+  width: 360px;
+  float: left;
+}
+.alla {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "MaxTf MinTf MittelTf"
+    "MaxPf MinPf MittelPf";
+}
+
+.MaxTf { grid-area: MaxTf; }
+
+.MinTf { grid-area: MinTf; }
+
+.MittelTf { grid-area: MittelTf; }
+
+.MittelPf { grid-area: MittelPf; }
+
+.MinPf { grid-area: MinPf; }
+
+.MaxPf { grid-area: MaxPf; }
+

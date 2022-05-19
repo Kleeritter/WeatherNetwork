@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de">
+   <head >
+      <title>Kleefelder Wetternetz</title>
+   </head>
+   <body style="background-color:powderblue;">
+      <h1 style="text-align:center;"> Kleefelder Wetternetzt</h1>
+      <img src = "/tausch/frog.jpg"
+      alt = "Monty der Kater" style="width:600px;height:600px;"/>
+      <p><cite>Monty der schnucckelige Kater</cite> 2021.</p> 
+      <h2 style="text-align:center;"> Ursprung</h2>
+      <p style="text-align:center;"> Das Kleefelder Wetternetzt ist ein Zusammenschluss einiger
+          Studierender der Meteorologie, welche die meteorologischen Parameter 
+          an den eigenen Standorten genauer untersuchen wollen.</p>
+      <h2 style="text-align:center;"> Messdaten</h2>
+      <h3 style="text-align:center;"> Karte des Messnetzes</h2>
+         <iframe title=" Messnetz" aria-label="Karte" id="datawrapper-chart-5l9DS" src="https://datawrapper.dwcdn.net/5l9DS/1/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="595"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+         </script>
+      <h2 style="text-align:center;"> Archiv</h2>
+      
+        <?php
+           $dbhost = 'http://kleeritter.duckdns.org:3036';
+           $dbuser = 'root';
+           $dbpass = 'lizuteras11';
+           $conn = mysql_connect($dbhost, $dbuser, $dbpass);
+        
+           if(! $conn ) {
+              die('Could not connect: ' . mysql_error());
+           }
+           
+           echo 'Connected successfully';
+           mysql_close($conn);
+        ?>
+
+
+
+
+   </body>
+   <address>
+      Written by Alex Steding.<br>
+      Visit us at:<br>
+      kleeritter.de<br>
+      Box 564, Disneyland<br>
+      USA
+      </address> 
+</html>
+ 
